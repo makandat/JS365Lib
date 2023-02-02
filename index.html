@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>JS365Lib のテスト</title>
+ <!-- BootstrapのCSS読み込み -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ <script src="../../js/JS365Lib.js"></script>
+ <style>
+   code {
+     color: red;
+     padding: 4px;
+   }
+   .border1 {
+      border: solid thin silver;
+   }
+ </style>
+ <script>
+  // ページがロードされたとき
+  function onLoad() {
+    // イベントハンドラ btnEscURL
+    clickEvent("btnEscURL", () => {
+      const text = getValue("txtEscURL");
+      setValue("resultEscURL", escURL(text));
+    });
+
+    // イベントハンドラ btnEscHTML
+    clickEvent("btnEscHTML", () => {
+      const text = getValue("txtEscHTML");
+      setValue("resultEscHTML", escHTML(text));
+    });
+
+    // イベントハンドラ btnGetValue
+    clickEvent("btnGetValue", () => {
+      const text = getValue("getValueText") + ", " + getValue("getValueValue");
+      setValue("resultGetValue", escHTML(text));
+    });
+
+    // イベントハンドラ btnSetValue
+    clickEvent("btnSetValue", () => {
+      setValue("setValueText", "setValue(id, value) で書き込みました。");
+      const text = getValue("setValueValue");
+      setValue("resultSetValue", escHTML(text));
+    });
+
+    // イベントハンドラ btnEi
+    clickEvent("btnEi", () => {
+      const ei = E("Ei");
+      const result = E("resultEi");
+      result.innerText = ei.value;
+    });
+
+    // イベントハンドラ btnEn
+    clickEvent("btnEn", () => {
+      const en = E("En", "n");
+      const result = E("resultEn");
+      result.innerText = en.value;
+    });
+
+    // E(id, "c")
+    const ec0 = E("border1", "c", 0);
+    const ec0val = ec0.innerText;
+    const ec1 = E("border1", "c", 1);
+    const ec1val = ec1.innerText;
+    setValue("resultEc", `${ec0val}, ${ec1val}`);
+
+    // E(id, "t")
+    const et0 = E("code", "t", 0);
+    const et0val = et0.innerText;
+    const et1 = E("code", "t", 1);
+    const et1val = et1.innerText;
+    setValue("resultEt", `${et0val}, ${et1val}`);
+  }
+ </script>
+</head>
+
+<body onload="onLoad()">
+  <!-- ヘッダー -->
+  <header class="container" style="padding:24px;">
+   <h1 id="header" class="text-center display-2 text-primary">JS365Lib のテスト</h1>
+   <h5 class="text-end">Updated on 2023/02/01</h5>
+   <hr />
+  </header>
+
+
+  <!-- Bootstrap コンテナ -->
+  <article class="container">
+    <nav class="navbar navbar-expand bg-light mb-4 p-1" style="font-size:1.5em">
+     <div class="container">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="JS365Lib.pdf" target="_target">説明書</a></li>
+        <li class="nav-item"><a class="nav-link" href="index2.html" target="_target">次のページ</a></li>
+        <li class="nav-item"><a class="nav-link" href="webapi.html" target="_target">WebAPIページ</a></li>
+      </ul>
+     </div>
+    </nav>
+    <!-- row 1 -->
+    <div class="row">
+      <!-- escURL(str) -->
+      <div class="col">
+        <h3>escURL(str)</h3>
+        <div class="mb-2"><label>文字列 <input type="text" id="txtEscURL" class="form-control" size="50"></label></div>
+        <div class="mb-1"><button class="btn btn-secondary" id="btnEscURL">実行する</button></div>
+        <div id="resultEscURL" class="text-danger mb-4"></div>
+      </div>
+      <!-- escHTML(str) -->
+      <div class="col">
+       <h3>escHTML(str)</h3>
+       <div class="mb-2"><label>文字列 <input type="text" id="txtEscHTML" class="form-control" size="50"></label></div>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnEscHTML">実行する</button></div>
+       <div id="resultEscHTML" class="text-danger mb-4"></div>
+      </div>
+    </div>
+
+    <!-- row 2 -->
+    <div class="row">
+     <!-- getValue(id) -->
+     <div class="col">
+       <div class="mb-2">
+         <h3 id="getValueText">getValue(id)</h3>
+         <label>値<input type="text" id="getValueValue" class="form-control" size="50"></label>
+       </div>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnGetValue">実行する</button></div>
+       <div id="resultGetValue" class="text-danger mb-4"></div>
+     </div>
+     <!-- setValue(id, value) -->
+     <div class="col">
+       <div class="mb-2">
+         <h3 id="setValueText">setValue(id, value)</h3>
+         <label>値<input type="text" id="setValueValue" class="form-control" size="50"></label>
+       </div>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnSetValue">実行する</button></div>
+       <div id="resultSetValue" class="text-danger mb-4"></div>
+     </div>
+    </div>
+
+    <!-- row 3 -->
+    <div class="row">
+     <div class="col">
+       <h3>E(id, "i", 0): by id</h3>
+       <div class="mb-2">
+         <label>値<input type="number" id="Ei" class="form-control" value="0"></label>
+       </div>
+       <div class="mb-4">
+         <button id="btnEi" class="btn btn-secondary">実行する</button>
+       </div>
+       <div id="resultEi" class="text-danger mb-4"></div>
+     </div>
+     <div class="col">
+       <h3>E(id, "n", 0): by name</h3>
+       <div class="mb-2">
+         <label>値<input type="number" name="En" class="form-control" value="0"></label>
+       </div>
+       <div class="mb-4">
+         <button id="btnEn" class="btn btn-secondary">実行する</button>
+       </div>
+       <div id="resultEn" class="text-danger mb-4"></div>
+     </div>
+    </div>
+
+    <!-- row 4 -->
+    <div class="row">
+     <div class="col">
+       <h3>E(id, "c", 0): by class</h3>
+       <div class="border1 mb-2 p-1">
+         class=border1[0]
+       </div>
+       <div class="border1 mb-2 p-1">
+         class=border1[1]
+       </div>
+       <div id="resultEc" class="mb-4"></div>
+     </div>
+     <div class="col">
+       <h3>E(id, "t", 0): by tag</h3>
+       <div class="mb-2 p-1">
+         <code>tag=code[0]</code>
+       </div>
+       <div class="mb-2 p-1">
+         <code>tag=code[1]</code>
+       </div>
+       <div id="resultEt" class="mb-4"></div>
+     </div>
+    </div>
+  <!-- コンテナの終わり -->
+  </article>
+
+  <!-- フッター -->
+  <footer>
+   <p>&nbsp;</p>
+   <p style="text-align:center;"><a href="#top">TOP</a></p>
+   <p>&nbsp;</p>
+   <p>&nbsp;</p>
+  </footer>
+
+  <!-- BootstrapのJS読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
