@@ -2,7 +2,8 @@
 <hr>
 <p>This is a JavaScript library for my conviniency.</p>
 <h2>Usage</h2>
-<p>&lt;script src="/JS_path/JS365Lib.js"&gt;&lt;/script&gt;</p>
+<p>&lt;script src="/JS_path/JS365Lib.js"&gt;&lt;/script&gt; or &lt;script src="/JS_path/JS365Lib2.js"&gt;&lt;/script&gt;</p>
+<p>JS365Lib2.js has the namespace 'JS365Lib'.</p>
 <h2>Functions</h2>
 <ol>
  <li>escURL(str): Escape URL special chars.</li>

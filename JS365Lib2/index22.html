@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>JS365Lib2 のテスト (2)</title>
+ <!-- BootstrapのCSS読み込み -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ <script src="../../js/JS365Lib2.js"></script>
+ <style>
+ </style>
+ <script>
+  // ページがロードされたとき
+  function onLoad() {
+    // イベントハンドラ btnInsertHTML
+    JS365Lib.clickEvent("btnInsertHTML", () => {
+      JS365Lib.insertHTML("img0", "<img src=\"/img/home_green.png\">");
+      //insertHTML("img0", "<img src=\"/img/home_orange.png\">", 3);
+    });
+
+    // イベントハンドラ btnCreate
+    JS365Lib.clickEvent("btnCreate", () => {
+      const e = JS365Lib.create("span");
+      JS365Lib.setValue(e, "Hello");
+      const r = JS365Lib.E("resultCreate");
+      r.append(e);
+    });
+
+    // イベントハンドラ btnGetAttr
+    JS365Lib.clickEvent("btnGetAttr", () => {
+      const a = JS365Lib.getAttr("txtGetAttr", "placeholder");
+      JS365Lib.setValue("resultGetAttr", a);
+    });
+
+    // イベントハンドラ btnSetAttr
+    JS365Lib.clickEvent("btnSetAttr", () => {
+      JS365Lib.setAttr("txtSetAttr", "placeholder", "setAttr");
+    });
+
+    // イベントハンドラ btnDropAttr
+    JS365Lib.clickEvent("btnDropAttr", () => {
+      JS365Lib.setAttr("txtDropAttr", "placeholder");
+    });
+
+    // イベントハンドラ btnClickEvent
+    JS365Lib.clickEvent("btnClickEvent", () => {
+      let count = parseInt(JS365Lib.getValue("Counter"));
+      count++;
+      JS365Lib.setValue("Counter", count.toString()); 
+    });
+
+    // イベントハンドラ selectChangeEvent
+    JS365Lib.changeEvent("selectChangeEvent", () => {
+      const v = JS365Lib.getValue("selectChangeEvent");
+      JS365Lib.setValue("resultChangeEvent", v);
+    });
+  }
+ </script>
+</head>
+
+<body onload="onLoad()">
+  <!-- ヘッダー -->
+  <header class="container" style="padding:24px;">
+   <h1 id="header" class="text-center display-2 text-danger">JS365Lib2 のテスト (2)</h1>
+   <h5 class="text-end">Updated on 2023/02/01</h5>
+   <hr />
+  </header>
+
+
+  <!-- Bootstrap コンテナ -->
+  <article class="container">
+    <nav class="navbar navbar-expand bg-light mb-4 p-1" style="font-size:1.5em">
+     <div class="container">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="JS365Lib.pdf" target="_target">説明書</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html" target="_target">前のページ</a></li>
+        <li class="nav-item"><a class="nav-link" href="webapi2.html" target="_target">WebAPIページ</a></li>
+      </ul>
+     </div>
+    </nav>
+    <!-- row 1 -->
+    <div class="row">
+      <!-- insertHTML(id, html, position) -->
+      <div class="col">
+        <h3>insertHTML(id, html, position)</h3>
+        <div id="insert" class="mb-2"></div>
+        <div class="mb-1"><button class="btn btn-secondary" id="btnInsertHTML">実行する</button></div>
+        <figure class="mb-4"><img src="/img/home_blue.png" id="img0"></figure>
+      </div>
+      <!-- create(tag) -->
+      <div class="col">
+       <h3>create(tag)</h3>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnCreate">実行する</button></div>
+       <div id="resultCreate" class="text-danger mb-4"></div>
+      </div>
+    </div>
+
+    <!-- row 2 -->
+    <div class="row">
+     <!-- getAttr(id, attr) -->
+     <div class="col">
+       <div class="mb-2">
+         <h3>getAttr(id, attr)</h3>
+         <label>テスト用 input<input type="text" id="txtGetAttr" name="txtGetAttr" class="form-control" placeholder="getAttr"></label>
+       </div>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnGetAttr">実行する</button></div>
+       <div id="resultGetAttr" class="text-danger mb-4"></div>
+     </div>
+     <!-- setAttr(id, attr, value) -->
+     <div class="col">
+       <div class="mb-2">
+         <h3>setAttr(id, attr, value)</h3>
+         <label>テスト用 input<input type="text" id="txtSetAttr" class="form-control" size="50"></label>
+       </div>
+       <div class="mb-1"><button class="btn btn-secondary" id="btnSetAttr">実行する</button></div>
+       <div id="resultSetAttr" class="text-danger mb-4"></div>
+     </div>
+    </div>
+
+    <!-- row 3 -->
+    <div class="row">
+     <!-- dropAttr(id, attr) -->
+     <div class="col">
+       <h3>dropAttr(id, attr)</h3>
+       <div class="mb-2">
+         <label>テスト用 input<input type="text" id="txtDropAttr" class="form-control" placeholder="dropAttr"></label>
+       </div>
+       <div class="mb-4">
+         <button id="btnDropAttr" class="btn btn-secondary">実行する</button>
+       </div>
+       <div id="resultDropAttr" class="text-danger mb-4"></div>
+     </div>
+     <div class="col">
+       <h3>(Reserved)</h3>
+     </div>
+    </div>
+
+    <!-- row 4 -->
+    <div class="row">
+     <!-- clickEvent(id, callback) -->
+     <div class="col">
+       <h3>clickEvent(id, callback)</h3>
+       <div class="mb-4">
+         <button id="btnClickEvent" class="btn btn-secondary">Click</button>
+       </div>
+       <div id="Counter" class="text-danger mb-4">0</div>
+     </div>
+     <!-- changeEvent(id, callback) -->
+     <div class="col">
+       <h3>changeEvent(id, callback)</h3>
+       <div class="mb-4">
+         <select id="selectChangeEvent" class="form-select">
+           <option selected>----</option>
+           <option value="0">Zero</option>
+           <option value="1">One</option>
+           <option value="2">Two</option>
+           <option value="3">Three</option>
+         </select>
+       </div>
+       <div id="resultChangeEvent" class="text-danger mb-4"></div>
+     </div>
+    </div>
+  <!-- コンテナの終わり -->
+  </article>
+
+  <!-- フッター -->
+  <footer>
+   <p>&nbsp;</p>
+   <p style="text-align:center;"><a href="#top">TOP</a></p>
+   <p>&nbsp;</p>
+   <p>&nbsp;</p>
+  </footer>
+
+  <!-- BootstrapのJS読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
