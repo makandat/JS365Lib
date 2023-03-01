@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.1.0 */
+/* My JS Library .. JS365Lib.js v2.2.4  2023-03-02 */
 "strict"
 
 const JS365Lib = {
@@ -137,15 +137,23 @@ const JS365Lib = {
     },
 
     // 子要素を作成する。
-    addChild: (parent, child) => {
-      return parent.appendChild(child);
+    addChild: (parent, tag) => {
+      let p = parent;
+      let c = tag;
+      if (typeof parent == "string") {
+        p = document.getElementById(parent);
+      }
+      if (typeof tag == "string") {
+        c = document.createElement(tag);
+      }
+      return p.appendChild(c);
     },
 
     // 要素の属性を得る。
     getAttr: (id, attr) => {
       let el = id;
       if (typeof el == 'string') {
-        el = JS365Lib.E(id);
+        el = document.getElementById(id);
       }
       return el.getAttribute(attr);
     },
@@ -154,7 +162,7 @@ const JS365Lib = {
     setAttr: (id, attr, value) => {
       let el = id;
       if (typeof el == 'string') {
-        el = JS365Lib.E(id);
+        el = document.getElementById(id);
       }
       el.setAttribute(attr, value);
     },
@@ -163,7 +171,7 @@ const JS365Lib = {
     dropAttr: (id, attr) => {
       let el = id;
       if (typeof el == 'string') {
-        el = JS365Lib.E(id);
+        el = document.getElementById(id);
       }
       el.removeAttribute(attr);
     },
@@ -179,26 +187,27 @@ const JS365Lib = {
     getJSON: (url, callback) => {
       fetch(url)
         .then(res => res.json())
-        .then(json => callback(json));
+        .then(data => callback(data));
     },
 
     // 指定した URL から GET/POST メソッドでテキストを得る。
     fetchText: (url, data, method, callback) => {
-      if (method == 'GET') {
-        let param = "?";
-        Object.keys(data).forEach((key) => {
-          if (param != '?') {
-            param += '&';
-          }
-          param += `${key}=${data[key]}`;
-        });
-        fetch(url + param)
+      let param = "";
+      Object.keys(data).forEach((key) => {
+        if (param != "") {
+          param += "&";
+        }
+        param += `${key}=${data[key]}`;
+      });
+      if (method == "GET") {
+
+        fetch(url + "?" + param)
         .then(res => res.text())
         .then(text => callback(text))
         .catch(err => callback(err));
       }
-      else if (method == 'POST') {
-        fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)})
+      else if (method == "POST") {
+        fetch(url, {method:"POST", body:param})
         .then(res => res.text())
         .then(text => callback(text))
         .catch(err => callback(err));
@@ -210,24 +219,29 @@ const JS365Lib = {
 
     // 指定した URL から GET/POST メソッドで JSON を得る。
     fetchJSON: (url, data, method, callback) => {
-      if (method == 'GET') {
-        let param = "?";
+      let param = "";
+      if (method == "GET") {
         Object.keys(data).forEach((key) => {
-          if (param != '?') {
-            param += '&';
+          if (param != "") {
+            param += "&";
           }
           param += `${key}=${data[key]}`;
         });
-        fetch(url + param)
+        fetch(url + "?" + param)
         .then(res => res.json())
         .then(data => callback(data))
         .catch(err => callback(err));
       }
-      else if (method == 'POST') {
+      else if (method == "POST") {
+        Object.keys(data).forEach((key) => {
+          if (param != "") {
+            param += "&";
+          }
+          param += `${key}=${data[key]}`;
+        });
         const request = new Request(url, {
-           method:'POST', 
-           headers:{'Content-Type':'application/json'},
-           body:JSON.stringify(data)
+           method:"POST",
+           body:param
         });
         fetch(request)
         .then(res => res.json())
@@ -240,30 +254,89 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで BLOB (画像など) を得る。
-    fetchBLOB: (url, data, method, callback) => {
-      if (method == 'GET') {
-        let param = "?";
+    fetchBLOB: (url, data, method, as, callback) => {
+      let param = "";
+      if (method == "GET") {
         Object.keys(data).forEach((key) => {
-          if (param != '?') {
-            param += '&';
+          if (param != "") {
+            param += "&";
           }
           param += `${key}=${data[key]}`;
         });
-        fetch(url + param)
-        .then(res => res.blob())
-        .then(blob => callback(window.URL.createObjectURL(blob)))
-        .catch(err => callback(err));
+        switch (as) {
+          case "text":
+            fetch(url + "?" + param)
+              .then(res => res.blob())
+              .then(blob => blob.text())
+              .then(text => callback(text));
+            break;
+          case "arrayBuffer":
+            fetch(url + "?" + param)
+              .then(res => res.blob())
+              .then(blob => blob.arrayBuffer())
+              .then(buffer => callback(buffer));
+            break;
+          case "slice":
+            fetch(url + "?" + param)
+              .then(res => res.blob())
+              .then(blob => blob.slice())
+              .then(slice => callback(slice));
+            break;
+          case "stream":
+            fetch(url + "?" + param)
+              .then(res => res.blob())
+              .then(blob => blob.stream())
+              .then(stream => callback(stream));
+            break;
+          default:
+            fetch(url + "?" + param)
+              .then(res => res.blob())
+              .then(blob => callback(blob));
+            break;
+        }
       }
-      else if (method == 'POST') {
-        const request = new Request(url, {
-           method:'POST', 
-           headers:{'Content-Type':'application/json'},
-           body:JSON.stringify(data)
+      else if (method == "POST") {
+        Object.keys(data).forEach((key) => {
+          if (param != "") {
+            param += "&";
+          }
+          param += `${key}=${data[key]}`;
         });
-        fetch(request)
-        .then(res => res.blob())
-        .then(blob => callback(window.URL.createObjectURL(blob)))
-        .catch(err => callback(err));
+        const request = new Request(url, {
+           method:"POST",
+           body:param
+        });
+        switch (as) {
+          case "text":
+            fetch(request)
+              .then(res => res.blob())
+              .then(blob => blob.text())
+              .then(text => callback(text));
+            break;
+          case "arrayBuffer":
+            fetch(request)
+              .then(res => res.blob())
+              .then(blob => blob.arrayBuffer())
+              .then(buffer => callback(buffer));
+            break;
+          case "slice":
+            fetch(request)
+              .then(res => res.blob())
+              .then(blob => blob.slice())
+              .then(slice => callback(slice));
+            break;
+          case "stream":
+            fetch(request)
+              .then(res => res.blob())
+              .then(blob => blob.stream())
+              .then(stream => callback(stream));
+            break;
+          default:
+            fetch(request)
+              .then(res => res.blob())
+              .then(blob => callback(blob));
+            break;
+        }
       }
       else {
         // 他のメソッドはサポートしない
@@ -271,25 +344,53 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで ArrayBuffer (純粋なバイナリー配列) を得る。
-    fetchArrayBuffer: (url, data, method, callback) => {
-      if (method == 'GET') {
-        let param = "?";
+    fetchArrayBuffer: (url, data, method, dataView, callback) => {
+      let param = "";
+      if (method == "GET") {
         Object.keys(data).forEach((key) => {
-          if (param != '?') {
-            param += '&';
+          if (param != "") {
+            param += "&";
           }
           param += `${key}=${data[key]}`;
         });
-        fetch(url + param)
-        .then(res => res.arrayBuffer())
-        .then(buffer => callback(buffer))
-        .catch(err => callback(err));
+        if (dataView) {
+          fetch(url + "?" + param)
+           .then(res => res.arrayBuffer())
+           .then(buffer => {
+              const dview = new DataView(buffer);
+              callback(dview);
+            });
+         }
+         else {
+            fetch(url + "?" + param)
+            .then(res => res.arrayBuffer())
+            .then(buffer => callback(buffer));
+         }
       }
-      else if (method == 'POST') {
-        fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)})
-        .then(res => res.arrayBuffer())
-        .then(buffer => callback(buffer))
-        .catch(err => callback(err));
+      else if (method == "POST") {
+        Object.keys(data).forEach((key) => {
+          if (param != "") {
+            param += "&";
+          }
+          param += `${key}=${data[key]}`;
+        });
+        const request = new Request(url, {
+           method:"POST",
+           body:param
+        });
+        if (dataView) {
+          fetch(request)
+           .then(res => res.arrayBuffer())
+           .then(buffer => {
+              const dview = new DataView(buffer);
+              callback(dview);
+            });
+        }
+        else {
+          fetch(request)
+          .then(res => res.arrayBuffer())
+          .then(data => callback(data));
+        }
       }
       else {
         // 他のメソッドはサポートしない
@@ -298,13 +399,29 @@ const JS365Lib = {
 
     // フォームをポストする。
     //  (input[type="file"] を含む enctype="multipart/form-data" 指定のフォームも可能)
-    postFormData: (url, form, callback) => {
+    postForm: (url, form, callback) => {
       event.preventDefault();
-      const formData = new FormData(form);
-      fetch(url, {method:'POST', body:formData})
+      const formType = typeof form;
+      if (formType == "string") {
+        const form1 = document.getElementById(form);
+        const formData1 = new FormData(form1);
+        fetch(url, {method:"POST", body:formData1})
+        .then(res => res.json())
+        .then(data => callback(data));
+      }
+      else {
+        const formData = new FormData(form);
+        fetch(url, {method:"POST", body:formData})
+        .then(res => res.json())
+        .then(data => callback(data));
+      }
+    },
+
+    // FormData をポストする。
+    postFormData: (url, formData, callback) => {
+      fetch(url, {method:"POST", body:formData})
       .then(res => res.json())
-      .then(data => callback(data))
-      .catch(err => callback(err));
+      .then(data => callback(data));
     },
 
     // JSONデータをポストする。
@@ -312,8 +429,7 @@ const JS365Lib = {
       event.preventDefault();
       fetch(url, {"method":"POST", "headers":{"Content-Type":"application/json"}, "body":JSON.stringify(data)})
       .then(res => res.json())
-      .then(data => callback(data))
-      .catch(err => callback(err));
+      .then(data => callback(data));
     },
 
     // テキストファイルをアップロードする。
@@ -364,12 +480,12 @@ const JS365Lib = {
       const efile = document.getElementById(id).files[0];
       if (efile) {
          const reader = new FileReader();
-         reader.addEventListener("loaded", event => {
+         reader.addEventListener("load", event => {
             callback(reader.result);
          });
          reader.readAsText(efile);
       }
-    });
+    },
 
     // バイナリーファイルを読む。id は input[type="file"] の ID。
     readBinaryFile: (id, callback) => {
@@ -377,12 +493,12 @@ const JS365Lib = {
       const efile = document.getElementById(id).files[0];
       if (efile) {
          const reader = new FileReader();
-         reader.addEventListener("loaded", event => {
+         reader.addEventListener("load", event => {
             callback(reader.result);
          });
          reader.readAsArrayBuffer(efile);
       }
-    });
+    },
 
     // click イベントハンドラを追加する。
     clickEvent: (id, callback) => {
