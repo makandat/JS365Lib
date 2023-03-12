@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v1.2.4  2023-03-01 */
+/* My JS Library .. JS365Lib.js v1.3.0  2023-03-06 */
 "strict";
 
 // URL エスケープ
@@ -396,8 +396,9 @@ function fetchArrayBuffer(url, data, method, dataView, callback) {
 
 // フォームをポストする。
 //  (input[type="file"] を含む enctype="multipart/form-data" 指定のフォームも可能)
-function postForm(url, form, callback) {
-  event.preventDefault();
+function postForm(url, form, callback, event=null) {
+  if (event)
+    event.preventDefault();
   const formType = typeof form;
   if (formType == "string") {
     const form1 = document.getElementById(form);
@@ -415,23 +416,27 @@ function postForm(url, form, callback) {
 }
 
 // FormData をポストする。
-function postFormData(url, formData, callback) {
+function postFormData(url, formData, callback, event=null) {
+  if (event)
+    event.preventDefault();
   fetch(url, {method:"POST", body:formData})
   .then(res => res.json())
   .then(data => callback(data));
 }
 
 // JSONデータをポストする。
-function postJSON(url, data, callback) {
-  event.preventDefault();
+function postJSON(url, data, callback, event=null) {
+  if (event)
+    event.preventDefault();
   fetch(url, {"method":"POST", "headers":{"Content-Type":"application/json"}, "body":JSON.stringify(data)})
   .then(res => res.json())
   .then(data => callback(data));
 }
 
 // テキストファイルをアップロードする。
-function uploadTextFile(url, id, callback) {
-  event.preventDefault();
+function uploadTextFile(url, id, callback, event=null) {
+  if (event)
+    event.preventDefault();
   const afile = document.getElementById(id).files[0];
   if (afile) {
     const reader = new FileReader();
@@ -451,8 +456,9 @@ function uploadTextFile(url, id, callback) {
 }
 
 // バイナリーファイルをアップロードする。
-function uploadBinaryFile(url, id, callback) {
-  event.preventDefault();
+function uploadBinaryFile(url, id, callback, event=null) {
+  if (event)
+    event.preventDefault();
   const afile = document.getElementById(id).files[0];
   if (afile) {
     const reader = new FileReader();
@@ -471,9 +477,25 @@ function uploadBinaryFile(url, id, callback) {
   }
 }
 
+// BLOB をアップロードする。
+function uploadBLOB(url, blob, callback, event=null) {
+  if (event)
+    event.preventDefault();
+  const request = new Request(url, {
+    method: "POST",
+    body: blob
+  });
+  fetch(request)
+  .then(res => res.text())
+  .then(text => {
+     callback(text);
+  });
+}
+
 // テキストファイルを読む。id は input[type="file"] の ID。
-function readTextFile(id, callback) {
-  event.preventDefault();
+function readTextFile(id, callback, event=null) {
+  if (event)
+    event.preventDefault();
   const efile = document.getElementById(id).files[0];
   if (efile) {
      const reader = new FileReader();
@@ -485,8 +507,9 @@ function readTextFile(id, callback) {
 }
 
 // バイナリーファイルを読む。id は input[type="file"] の ID。
-function readBinaryFile(id, callback) {
-  event.preventDefault();
+function readBinaryFile(id, callback, event=null) {
+  if (event)
+    event.preventDefault();
   const efile = document.getElementById(id).files[0];
   if (efile) {
      const reader = new FileReader();
@@ -503,7 +526,7 @@ function clickEvent(id, callback) {
   if (typeof id == "string") {
     el = document.getElementById(id);
   }
-  el.addEventListener("click", callback);
+  el.addEventListener("click", callback, {passive: false});
 }
 
 // change イベントハンドラを追加する。
@@ -512,5 +535,5 @@ function changeEvent(id, callback) {
   if (typeof id == "string") {
     el = document.getElementById(id);
   }
-  el.addEventListener("change", callback);
+  el.addEventListener("change", callback, {passive: false});
 }
