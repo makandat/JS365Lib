@@ -1,9 +1,9 @@
-/* My JS Library .. JS365Lib.js v2.3.0  2023-03-07 */
+/* My JS Library .. JS365Lib.js v2.3.1  2023-03-13 */
 "strict"
 
 const JS365Lib = {
     // URL エスケープ
-    escURL: (str) => {
+    escURL(str) {
         str = str.replace(/\s/g, "%20");
         str = str.replace(/#/g, "%23");
         str = str.replace(/\$/g, "%24");
@@ -15,12 +15,12 @@ const JS365Lib = {
     },
 
     // HTML のエスケープ
-    escHTML: (str) => {
+    escHTML(str) {
       return str.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     },
 
     // id, type (index) で指定したエレメントを取得する。
-    E: (id, type="i", index=0) => {
+    E(id, type="i", index=0) {
       var el = null;
       switch (type) {
         case "i":  // id
@@ -43,7 +43,7 @@ const JS365Lib = {
     },
 
     // 要素の値を得る。
-    getValue: (id) => {
+    getValue(id) {
       if (typeof id == 'string') {
         if (JS365Lib.E(id).value == undefined) {
           return JS365Lib.E(id).innerText;
@@ -66,7 +66,7 @@ const JS365Lib = {
     },
 
     // 要素の値を設定する。。
-    setValue: (id, value, escape=true) => {
+    setValue(id, value, escape=true) {
       if (typeof id == 'string') {
         if (JS365Lib.E(id).value == undefined) {
           if (escape) {
@@ -104,7 +104,7 @@ const JS365Lib = {
     },
 
     // HTML文字列をタグの前後に挿入する。
-    insertHTML: (id, html, position=0) => {
+    insertHTML(id, html, position=0) {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
@@ -128,7 +128,7 @@ const JS365Lib = {
     },
 
     // 要素を作成する。elem != null の時は、elem の後に追加する。
-    create: (tag, elem=null) => {
+    create(tag, elem=null) {
       const e = document.createElement(tag);
       if (elem) {
         elem.append(e);
@@ -137,7 +137,7 @@ const JS365Lib = {
     },
 
     // 子要素を作成する。
-    addChild: (parent, tag) => {
+    addChild(parent, tag) {
       let p = parent;
       let c = tag;
       if (typeof parent == "string") {
@@ -150,7 +150,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を得る。
-    getAttr: (id, attr) => {
+    getAttr(id, attr) {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -159,7 +159,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を設定する。
-    setAttr: (id, attr, value) => {
+    setAttr(id, attr, value) {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -168,7 +168,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を削除する。
-    dropAttr: (id, attr) => {
+    dropAttr(id, attr) {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -176,22 +176,22 @@ const JS365Lib = {
       el.removeAttribute(attr);
     },
 
-    // 指定した完全なリクエストパス (URL) から GET メソッドでテキストを得る。
-    getText: (url, callback) => {
+    // 指定した完全なリクエストパス (URL) から GET メソッドでテキストを得る。(HTML もこのメソッドで取得する)
+    getText(url, callback) {
       fetch(url)
         .then(res => res.text())
         .then(text => callback(text));
     },
 
     // 指定した完全なリクエストパス (URL) から GET メソッドで JSON を得る。
-    getJSON: (url, callback) => {
+    getJSON(url, callback) {
       fetch(url)
         .then(res => res.json())
         .then(data => callback(data));
     },
 
     // 指定した URL から GET/POST メソッドでテキストを得る。
-    fetchText: (url, data, method, callback) => {
+    fetchText(url, data, method, callback) {
       let param = "";
       Object.keys(data).forEach((key) => {
         if (param != "") {
@@ -218,7 +218,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで JSON を得る。
-    fetchJSON: (url, data, method, callback) => {
+    fetchJSON(url, data, method, callback) {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -254,7 +254,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで BLOB (画像など) を得る。
-    fetchBLOB: (url, data, method, as, callback) => {
+    fetchBLOB(url, data, method, as, callback) {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -344,7 +344,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで ArrayBuffer (純粋なバイナリー配列) を得る。
-    fetchArrayBuffer: (url, data, method, dataView, callback) => {
+    fetchArrayBuffer(url, data, method, dataView, callback) {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -399,7 +399,7 @@ const JS365Lib = {
 
     // フォームをポストする。
     //  (input[type="file"] を含む enctype="multipart/form-data" 指定のフォームも可能)
-    postForm: (url, form, callback,event=null) => {
+    postForm(url, form, callback,event=null) {
       if (event)
         event.preventDefault();
       const formType = typeof form;
@@ -419,7 +419,7 @@ const JS365Lib = {
     },
 
     // FormData をポストする。
-    postFormData: (url, formData, callback, event=null) => {
+    postFormData(url, formData, callback, event=null) {
       if (event)
         event.preventDefault();
       fetch(url, {method:"POST", body:formData})
@@ -437,7 +437,7 @@ const JS365Lib = {
     },
 
     // テキストファイルをアップロードする。
-    uploadTextFile: (url, id, callback, event=null) => {
+    uploadTextFile(url, id, callback, event=null) {
       if (event)
         event.preventDefault();
       const afile = document.getElementById(id).files[0];
@@ -459,7 +459,7 @@ const JS365Lib = {
     },
 
     // バイナリーファイルをアップロードする。
-    uploadBinaryFile: (url, id, callback, event=null) => {
+    uploadBinaryFile(url, id, callback, event=null) {
       if (event)
         event.preventDefault();
       const afile = document.getElementById(id).files[0];
@@ -481,7 +481,7 @@ const JS365Lib = {
     },
 
     // BLOB をアップロードする。
-    uploadBLOB: (url, blob, callback, event=null) => {
+    uploadBLOB(url, blob, callback, event=null) {
       if (event)
         event.preventDefault();
       const request = new Request(url, {
@@ -496,7 +496,7 @@ const JS365Lib = {
    },
 
     // テキストファイルを読む。id は input[type="file"] の ID。
-    readTextFile: (id, callback, event=null) => {
+    readTextFile(id, callback, event=null) {
       if (event)
         event.preventDefault();
       const efile = document.getElementById(id).files[0];
@@ -510,7 +510,7 @@ const JS365Lib = {
     },
 
     // バイナリーファイルを読む。id は input[type="file"] の ID。
-    readBinaryFile: (id, callback, event=null) => {
+    readBinaryFile(id, callback, event=null) {
       if (event)
         event.preventDefault();
       const efile = document.getElementById(id).files[0];
@@ -524,20 +524,20 @@ const JS365Lib = {
     },
 
     // click イベントハンドラを追加する。
-    clickEvent: (id, callback) => {
+    clickEvent(id, callback) {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
       }
-      el.addEventListener('click', callback, , {passive: false});
+      el.addEventListener('click', callback, {passive: false});
     },
 
     // change イベントハンドラを追加する。
-    changeEvent: (id, callback) => {
+    changeEvent(id, callback) {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
       }
-      el.addEventListener('change', callback, , {passive: false});
+      el.addEventListener('change', callback, {passive: false});
     }
 };
