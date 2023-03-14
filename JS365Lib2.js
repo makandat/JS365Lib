@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.3.1  2023-03-13 */
+/* My JS Library .. JS365Lib.js v2.4.2  2023-03-14 */
 "strict"
 
 const JS365Lib = {
@@ -539,5 +539,57 @@ const JS365Lib = {
         el = JS365Lib.E(id);
       }
       el.addEventListener('change', callback, {passive: false});
+    }
+
+    // ストレージのキーの一覧を得る。prefix が空でないときはその文字列が先頭にあるキー (prefix を除いたもの) だけを取得する)
+    getStorageKeys(prefix="", session=true) {
+      let storage = sessionStorage;
+      if (session == false)
+        storage = localStorage;
+      let result = [];
+      for (let i = 0; i < storage.length; i++) {
+        let key = storage.key(i);
+        if (prefix == "") {
+          result.push(key);
+        }
+        else {
+          if (key.startsWith(prefix)) {
+             key = key.replace(prefix, "");
+             result.push(key);
+          }
+        }
+      }
+      return result;
+    }
+
+    // ストレージのキーに対する値を得る。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
+    getStorageValue(key, prefix="", session=true) {
+      let storage = sessionStorage;
+      if (session == false)
+        storage = localStorage;
+      key = prefix + key;
+      return storage.getItem(key);
+    }
+
+    // ストレージのキーに対する値を追加または置換する。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
+    setStorageValue(key, value, prefix="", session=true) {
+      let storage = sessionStorage;
+      if (session == false)
+        storage = localStorage;
+      key = prefix + key;
+      storage.setItem(key, value);
+    }
+
+    // sessionStorage ストレージをクリアする。(localStorage は他のアプリケーションと共有するため個別のキーを削除することによりクリアすること)
+    clearSessionSorage() {
+      sessionStorage.clear();
+    }
+
+    // ストレージのキーを削除する。(localStorage は他のアプリケーションと共有するため、prefix でアプリケーションを区別する)
+    deleteStorageKey(key, prefix="", session=true) {
+      let storage = sessionStorage;
+      if (session == false)
+        storage = localStorage;
+      storage.removeItem(prefix + key);
     }
 };
