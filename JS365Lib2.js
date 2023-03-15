@@ -539,7 +539,7 @@ const JS365Lib = {
         el = JS365Lib.E(id);
       }
       el.addEventListener('change', callback, {passive: false});
-    }
+    },
 
     // ストレージのキーの一覧を得る。prefix が空でないときはその文字列が先頭にあるキー (prefix を除いたもの) だけを取得する)
     getStorageKeys(prefix="", session=true) {
@@ -560,7 +560,7 @@ const JS365Lib = {
         }
       }
       return result;
-    }
+    },
 
     // ストレージのキーに対する値を得る。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
     getStorageValue(key, prefix="", session=true) {
@@ -569,7 +569,7 @@ const JS365Lib = {
         storage = localStorage;
       key = prefix + key;
       return storage.getItem(key);
-    }
+    },
 
     // ストレージのキーに対する値を追加または置換する。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
     setStorageValue(key, value, prefix="", session=true) {
@@ -578,12 +578,12 @@ const JS365Lib = {
         storage = localStorage;
       key = prefix + key;
       storage.setItem(key, value);
-    }
+    },
 
     // sessionStorage ストレージをクリアする。(localStorage は他のアプリケーションと共有するため個別のキーを削除することによりクリアすること)
     clearSessionSorage() {
       sessionStorage.clear();
-    }
+    },
 
     // ストレージのキーを削除する。(localStorage は他のアプリケーションと共有するため、prefix でアプリケーションを区別する)
     deleteStorageKey(key, prefix="", session=true) {
@@ -591,7 +591,7 @@ const JS365Lib = {
       if (session == false)
         storage = localStorage;
       storage.removeItem(prefix + key);
-    }
+    },
 
     // HTML テーブルを作成する。
     htmlTable(rows, header=false, table="", tr="", th="", td="") {
@@ -637,7 +637,7 @@ const JS365Lib = {
       }
       html += "</table>\n";
       return html;
-    }
+    },
 
     // HTML リストを作成する。
     htmlList(data, type="ul", ul="", li="") {
