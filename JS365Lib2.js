@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.4.2  2023-03-14 */
+/* My JS Library .. JS365Lib.js v2.5.0  2023-03-15 */
 "strict"
 
 const JS365Lib = {
@@ -591,5 +591,67 @@ const JS365Lib = {
       if (session == false)
         storage = localStorage;
       storage.removeItem(prefix + key);
+    }
+
+    // HTML テーブルを作成する。
+    htmlTable(rows, header=false, table="", tr="", th="", td="") {
+      let html = "";
+      let row = rows[0];
+      let n = row.length;
+      let tagtr = "<tr>";
+      if (tr != "") {
+        tagtr = `<tr class="${tr}">`;
+      }
+      tagtd = "<td>";
+      if (td != "") {
+        tagtd = `<td class="${td}">`;
+      }
+      if (table == "") {
+        html += "<table>\n";
+      }
+      else {
+        html += `<table class="${table}">\n`;
+      }
+      let i = 0;
+      // ヘッダ行
+      if (header) {
+        i = 1;
+        html += tagtr;
+        if (th == "") {
+          for (let h = 0; h < n; h++) {
+            html += `<th>"${rows[0][h]}"</th>`;
+          }
+        }
+        else {
+            html += `<th class="${th}">"${rows[0][h]}"</th>`;
+        }
+        html += "</tr>\n";
+      }
+      // データ行
+      for (; i < rows.length; i++) {
+        html += tagtr;
+        for (let j = 0; j < n; j++) {
+          html += `${tagtd}${rows[i][j]}</td>`;
+        }
+        html += "</tr>\n";
+      }
+      html += "</table>\n";
+      return html;
+    }
+
+    // HTML リストを作成する。
+    htmlList(data, type="ul", ul="", li="") {
+      html = `<${type}>\n`;
+      if (ul != "")
+        html = `<${type} class="${ul}">\n`;
+      let tagli = "<li>";
+      if (li != "")
+        tagli = `<li class="${li}">`;
+      const n = data.length;
+      for (let i = 0; i < n; i++) {
+         html += `${tagli}${data[i]}</li>\n`;
+      }
+      html += `</${type}>\n`;
+      return html;
     }
 };
