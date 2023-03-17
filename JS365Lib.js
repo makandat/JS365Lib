@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v1.5.0  2023-03-15 */
+/* My JS Library .. JS365Lib.js v1.5.1  2023-03-15 */
 "strict";
 
 // URL エスケープ
@@ -573,7 +573,7 @@ function setStorageValue(key, value, prefix="", session=true) {
 }
 
 // sessionStorage ストレージをクリアする。(localStorage は他のアプリケーションと共有するため個別のキーを削除することによりクリアすること)
-function clearSessionSorage() {
+function clearSessionStorage() {
   sessionStorage.clear();
 }
 

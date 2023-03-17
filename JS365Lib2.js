@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.5.0  2023-03-15 */
+/* My JS Library .. JS365Lib.js v2.5.1  2023-03-15 */
 "strict"
 
 const JS365Lib = {
@@ -581,7 +581,7 @@ const JS365Lib = {
     },
 
     // sessionStorage ストレージをクリアする。(localStorage は他のアプリケーションと共有するため個別のキーを削除することによりクリアすること)
-    clearSessionSorage() {
+    clearSessionStorage() {
       sessionStorage.clear();
     },
 
