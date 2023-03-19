@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.5.1  2023-03-15 */
+/* My JS Library .. JS365Lib.js v2.6.0  2023-03-19 */
 "strict"
 
 const JS365Lib = {
@@ -653,5 +653,47 @@ const JS365Lib = {
       }
       html += `</${type}>\n`;
       return html;
+    },
+
+    // ドラッグ開始のイベントハンドラ
+    onDragEnter(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+    },
+
+    // ドラッグ中のイベントハンドラ
+    onDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+    },
+
+    // ファイルがドロップしたとき (control は input[type="file"] オブジェクトであること)
+    onDrop(event, control, listid) {
+    // 既定の動作をキャンセルしてドロップできるようにする。
+        event.preventDefault();
+        // ドロップされたデータを取得する。
+        var files = event.dataTransfer.files;
+        // input[type="file"] の control.files を設定する。
+        control.files = files;
+        // <ul id=listid></ul> にファイルを表示
+        for (let f of files) {
+          insertHTML(listid, "<li>" + f.name + "</li>", 2);
+        }
     }
+/*
+   ドラッグ＆ドロップ フォームの例
+
+  <form name="form1" method="POST" enctype="multipart/form-data" action="/cgi-bin/CGI365Lib/Class/fileUpload2.cgi"> 
+   <input type="hidden" name="hidden1" value="Upload File OK">
+   <input type="file" name="file1" style="display:none">
+   <div id="dest" class="section"
+     ondragenter="JS365Lib.onDragEnter(event);"
+     ondragover="JS365Lib.onDragOver(event);"
+     ondrop="JS365Lib.onDrop(event, form1.file1);">
+    ここへドロップ (1個のみ)
+   </div>
+   <ul id="files"></ul>
+   <div style="margin-left:28%;margin-top:25px;"><button type="submit">Submit</button></div>
+  </form>
+*/
 };
