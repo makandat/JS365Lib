@@ -43,10 +43,13 @@ const JS365Lib = {
     },
 
     // 要素の値を得る。
-    getValue(id) {
+    getValue(id, escape=true) {
       if (typeof id == 'string') {
         if (JS365Lib.E(id).value == undefined) {
-          return JS365Lib.E(id).innerText;
+          if (escape)
+            return JS365Lib.E(id).innerText;
+          else
+            return JS365Lib.E(id).innerHTML;
         }
         else {
           return JS365Lib.E(id).value;
@@ -54,7 +57,10 @@ const JS365Lib = {
       }
       else if (typeof id == 'object') {
         if (id.value == undefined) {
-          return id.innerText;
+          if (escape)
+            return JS365Lib.id.innerText;
+          else
+            return JS365Lib.id.innerHTML;
         }
         else {
           return id.value;

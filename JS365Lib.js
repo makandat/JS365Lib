@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v1.6.0  2023-03-19 */
+/* My JS Library .. JS365Lib.js v1.6.1  2023-03-22 */
 "strict";
 
 // URL エスケープ
@@ -42,11 +42,14 @@ function E(id, type="i", index=0) {
 }
 
 // 要素の値を得る。
-function getValue(id) {
+function getValue(id, escape=true) {
   if (typeof id == "string") {
     const el = document.getElementById(id);
     if (el.value == undefined) {
-      return el.innerText;
+      if (escape)
+        return el.innerText;
+      else
+        return el.innerHTML;
     }
     else {
       return el.value;
@@ -54,7 +57,10 @@ function getValue(id) {
   }
   else if (typeof id == "object") {
     if (id.value == undefined) {
-      return id.innerText;
+      if (escape)
+        return id.innerText;
+      else
+        return id.innerHTML;
     }
     else {
       return id.value;
