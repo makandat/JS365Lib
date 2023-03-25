@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v2.6.0  2023-03-19 */
+/* My JS Library .. JS365Lib.js v2.6.2  2023-03-25 */
 "strict"
 
 const JS365Lib = {
@@ -661,6 +661,17 @@ const JS365Lib = {
       return html;
     },
 
+    // HTML アンカー (aタグ) を作成する。
+    function htmlAnchor(url, text, target="") {
+      html = `<a href="${url}`;
+      if (target == "")
+         html += ">";
+      else
+         html += ` target="${target}">`;
+      html += `${text}</a>`;
+      return html;
+    },
+
     // ドラッグ開始のイベントハンドラ
     onDragEnter(event) {
       event.preventDefault();
@@ -685,7 +696,29 @@ const JS365Lib = {
         for (let f of files) {
           insertHTML(listid, "<li>" + f.name + "</li>", 2);
         }
+    },
+
+    // ローカルに保存されている全クッキーを辞書として返す。
+    getAllCookie() {
+      const allCookie = document.cookie;
+      const listCookie = allCookie.split(";");
+      let cookies = {};
+      if (listCookie.length > 0) {
+        for (const cookie of listCookie) {
+           const kvpair = cookie.split("=");
+           const key = kvpair[0].trim();
+           const value = kvpair[1].trim();
+           cookies[key] = value;
+        }
+      }
+      return cookies;
+    },
+
+    // ローカルに保存されているクッキーに追加あるいは書き換える。
+    setCookie(key, value) {
+      document.cookie = `${key}=${value}`;
     }
+
 /*
    ドラッグ＆ドロップ フォームの例
 

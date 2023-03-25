@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v1.6.1  2023-03-22 */
+/* My JS Library .. JS365Lib.js v1.6.2  2023-03-25 */
 "strict";
 
 // URL エスケープ
@@ -653,6 +653,17 @@ function htmlList(data, type="ul", ul="", li="") {
   return html;
 }
 
+// HTML アンカー (aタグ) を作成する。
+function htmlAnchor(url, text, target="") {
+  html = `<a href="${url}`;
+  if (target == "")
+     html += ">";
+  else
+     html += ` target="${target}">`;
+  html += `${text}</a>`;
+  return html;
+}
+
 // ドラッグ開始のイベントハンドラ
 function onDragEnter(event) {
   event.preventDefault();
@@ -677,6 +688,27 @@ function onDrop(event, control, listid) {
     for (let f of files) {
       insertHTML(listid, "<li>" + f.name + "</li>", 2);
     }
+}
+
+// ローカルに保存されている全クッキーを辞書として返す。
+function getAllCookie() {
+  const allCookie = document.cookie;
+  const listCookie = allCookie.split(";");
+  let cookies = {};
+  if (listCookie.length > 0) {
+    for (const cookie of listCookie) {
+       const kvpair = cookie.split("=");
+       const key = kvpair[0].trim();
+       const value = kvpair[1].trim();
+       cookies[key] = value;
+    }
+  }
+  return cookies;
+}
+
+// ローカルに保存されているクッキーに追加あるいは書き換える。
+function setCookie(key, value) {
+  document.cookie = `${key}=${value}`;
 }
 
 /*
