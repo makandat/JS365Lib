@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8" />
  <meta name="viewport" content="width=device-width,initial-scale=1" />
- <title>JS365Lib</title>
+ <title>JS365Lib 1.6.2</title>
  <!-- BootstrapのCSS読み込み -->
  <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs.min.css" rel="stylesheet">
@@ -88,7 +88,7 @@
 <body>
  <!-- ヘッダー -->
  <header  class="container bg-secondary rounded text-white text-center shadow">
-  <h1 class="display-2 text-white text-center p-3">JS365Lib</h1>
+  <h1 class="display-2 text-white text-center p-3">JS365Lib 1.6.2</h1>
   <p class="fs-4 p-2">v1.1.1 / 2.1.1</p>
  </header>
 
@@ -176,8 +176,15 @@
          <ul>
           <li><a href="#htmlTable">htmlTable(rows, header=false, table="", tr="", th="", td="")</a></li>
           <li><a href="#htmlList">htmlList(data, type="ul", ul="", li="")</a></li>
+          <li><a href="#htmlAnchor">htmlAnchor(url, text, target="")</a></li>
          </ul>
         </li>
+        <li><a href="#cookie">クッキー関数
+         <ul>
+          <li><a href="#getAllCookie">getAllCookie()</a></li>
+          <li><a href="#setCookie">setCookie(key, value)</a></li>
+         </ul>
+        <li>
         <li><a href="#other_functions">その他の関数</a>
           <ul>
            <li><a href="#escURL">escURL(str)</a></li>
@@ -1338,9 +1345,58 @@ function htmlList(data, type="ul", ul="", li="") {
   html += `&lt;/${type}>\n`;
   return html;
 }</code></pre>
+      <!--  htmlAnchor(url, text, target="") -->
+      <h3><a id="htmlAnchor">htmlAnchor(url, text, target="")</a></h3>
+      <p>a タグを作成する。url はリンク先、text は表示文字列、target は target 属性である。<p>
+      <p>使用例</p>
+      <pre><code>htmlAnchor("http://localhost", "Home")</code></pre>
+      <p>ソース</p>
+      <pre><code>// HTML アンカー (aタグ) を作成する。
+function htmlAnchor(url, text, target="") {
+  html = `&lt;a href="${url}`;
+  if (target == "")
+     html += ">";
+  else
+     html += ` target="${target}">`;
+  html += `${text}&lt;/a>`;
+  return html;
+}</code></pre>
       <br>
+      <!--  クッキー関数 -->
+      <h2 class="text-success fs-2 mt-2"><a id="cookie">クッキー関数</a></h2>
+      <!--  getAllCookie() -->
+      <h3><a id="getAllCookie"></a>getAllCookie()</h3>
+      <p>取得可能なすべてのクッキーを辞書形式で取得する。辞書のキーはクッキー名、値はクッキーの値である。</p>
+      <p>使用例</p>
+      <pre><code>cookies = getAllCookie();</code></pre>
+      <p>ソース</p>
+      <pre><code>// ローカルに保存されている全クッキーを辞書として返す。
+function getAllCookie() {
+  const allCookie = document.cookie;
+  const listCookie = allCookie.split(";");
+  let cookies = {};
+  if (listCookie.length > 0) {
+    for (const cookie of listCookie) {
+       const kvpair = cookie.split("=");
+       const key = kvpair[0].trim();
+       const value = kvpair[1].trim();
+       cookies[key] = value;
+    }
+  }
+  return cookies;
+}</code></pre>
+      <!--  setCookie(key, value) -->
+      <h3><a id="setCookie"></a>setCookie(key, value)</h3>
+      <p>１つのクッキーを追加あるいは変更する。key はクッキーの名前で存在しない場合は値 value の追加となり、存在する場合は値が value に更新される。</p>
+      <p>使用例</p>
+      <pre><code>setCookie("address", "192.168.1.10");</code></pre>
+      <p>ソース</p>
+      <pre><code>// ローカルに保存されているクッキーに追加あるいは書き換える。
+function setCookie(key, value) {
+  document.cookie = `${key}=${value}`;
+}</code></pre>
       <!-- その他の関数 -->
-      <h2 class="text-success fs-2 mt-2"><a id="other_functions">その他の関数</a></h3>
+      <h2 class="text-success fs-2 mt-4"><a id="other_functions">その他の関数</a></h2>
       <p><a href="other_funcs.html#miscFunctions" target="_blank">その他の関数のテスト</a></p>
       <!--  escURL(str) -->
       <h3><a id="escURL">escURL(str)</a></h3>
