@@ -1,9 +1,9 @@
-/* My JS Library .. JS365Lib.js v2.6.2  2023-03-25 */
+/* My JS Library .. JS365Lib.js v2.3.0  2023-03-07 */
 "strict"
 
 const JS365Lib = {
     // URL エスケープ
-    escURL(str) {
+    escURL: (str) => {
         str = str.replace(/\s/g, "%20");
         str = str.replace(/#/g, "%23");
         str = str.replace(/\$/g, "%24");
@@ -15,12 +15,12 @@ const JS365Lib = {
     },
 
     // HTML のエスケープ
-    escHTML(str) {
+    escHTML: (str) => {
       return str.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     },
 
     // id, type (index) で指定したエレメントを取得する。
-    E(id, type="i", index=0) {
+    E: (id, type="i", index=0) => {
       var el = null;
       switch (type) {
         case "i":  // id
@@ -43,13 +43,10 @@ const JS365Lib = {
     },
 
     // 要素の値を得る。
-    getValue(id, escape=true) {
+    getValue: (id) => {
       if (typeof id == 'string') {
         if (JS365Lib.E(id).value == undefined) {
-          if (escape)
-            return JS365Lib.E(id).innerText;
-          else
-            return JS365Lib.E(id).innerHTML;
+          return JS365Lib.E(id).innerText;
         }
         else {
           return JS365Lib.E(id).value;
@@ -57,10 +54,7 @@ const JS365Lib = {
       }
       else if (typeof id == 'object') {
         if (id.value == undefined) {
-          if (escape)
-            return JS365Lib.id.innerText;
-          else
-            return JS365Lib.id.innerHTML;
+          return id.innerText;
         }
         else {
           return id.value;
@@ -72,7 +66,7 @@ const JS365Lib = {
     },
 
     // 要素の値を設定する。。
-    setValue(id, value, escape=true) {
+    setValue: (id, value, escape=true) => {
       if (typeof id == 'string') {
         if (JS365Lib.E(id).value == undefined) {
           if (escape) {
@@ -110,7 +104,7 @@ const JS365Lib = {
     },
 
     // HTML文字列をタグの前後に挿入する。
-    insertHTML(id, html, position=0) {
+    insertHTML: (id, html, position=0) => {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
@@ -134,7 +128,7 @@ const JS365Lib = {
     },
 
     // 要素を作成する。elem != null の時は、elem の後に追加する。
-    create(tag, elem=null) {
+    create: (tag, elem=null) => {
       const e = document.createElement(tag);
       if (elem) {
         elem.append(e);
@@ -143,7 +137,7 @@ const JS365Lib = {
     },
 
     // 子要素を作成する。
-    addChild(parent, tag) {
+    addChild: (parent, tag) => {
       let p = parent;
       let c = tag;
       if (typeof parent == "string") {
@@ -156,7 +150,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を得る。
-    getAttr(id, attr) {
+    getAttr: (id, attr) => {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -165,7 +159,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を設定する。
-    setAttr(id, attr, value) {
+    setAttr: (id, attr, value) => {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -174,7 +168,7 @@ const JS365Lib = {
     },
 
     // 要素の属性を削除する。
-    dropAttr(id, attr) {
+    dropAttr: (id, attr) => {
       let el = id;
       if (typeof el == 'string') {
         el = document.getElementById(id);
@@ -182,22 +176,22 @@ const JS365Lib = {
       el.removeAttribute(attr);
     },
 
-    // 指定した完全なリクエストパス (URL) から GET メソッドでテキストを得る。(HTML もこのメソッドで取得する)
-    getText(url, callback) {
+    // 指定した完全なリクエストパス (URL) から GET メソッドでテキストを得る。
+    getText: (url, callback) => {
       fetch(url)
         .then(res => res.text())
         .then(text => callback(text));
     },
 
     // 指定した完全なリクエストパス (URL) から GET メソッドで JSON を得る。
-    getJSON(url, callback) {
+    getJSON: (url, callback) => {
       fetch(url)
         .then(res => res.json())
         .then(data => callback(data));
     },
 
     // 指定した URL から GET/POST メソッドでテキストを得る。
-    fetchText(url, data, method, callback) {
+    fetchText: (url, data, method, callback) => {
       let param = "";
       Object.keys(data).forEach((key) => {
         if (param != "") {
@@ -224,7 +218,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで JSON を得る。
-    fetchJSON(url, data, method, callback) {
+    fetchJSON: (url, data, method, callback) => {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -260,7 +254,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで BLOB (画像など) を得る。
-    fetchBLOB(url, data, method, as, callback) {
+    fetchBLOB: (url, data, method, as, callback) => {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -350,7 +344,7 @@ const JS365Lib = {
     },
 
     // 指定した URL から GET/POST メソッドで ArrayBuffer (純粋なバイナリー配列) を得る。
-    fetchArrayBuffer(url, data, method, dataView, callback) {
+    fetchArrayBuffer: (url, data, method, dataView, callback) => {
       let param = "";
       if (method == "GET") {
         Object.keys(data).forEach((key) => {
@@ -405,7 +399,7 @@ const JS365Lib = {
 
     // フォームをポストする。
     //  (input[type="file"] を含む enctype="multipart/form-data" 指定のフォームも可能)
-    postForm(url, form, callback,event=null) {
+    postForm: (url, form, callback,event=null) => {
       if (event)
         event.preventDefault();
       const formType = typeof form;
@@ -425,7 +419,7 @@ const JS365Lib = {
     },
 
     // FormData をポストする。
-    postFormData(url, formData, callback, event=null) {
+    postFormData: (url, formData, callback, event=null) => {
       if (event)
         event.preventDefault();
       fetch(url, {method:"POST", body:formData})
@@ -442,8 +436,17 @@ const JS365Lib = {
       .then(data => callback(data));
     },
 
+    // XML データをポストする。
+    postXml: (url, data, callback, event=null) => {
+      if (event)
+        event.preventDefault();
+      fetch(url, {"method":"POST", "headers":{"Content-Type":"application/xml"}, "body":data})
+      .then(res => res.json())
+      .then(data => callback(data));
+    },
+
     // テキストファイルをアップロードする。
-    uploadTextFile(url, id, callback, event=null) {
+    uploadTextFile: (url, id, callback, event=null) => {
       if (event)
         event.preventDefault();
       const afile = document.getElementById(id).files[0];
@@ -465,7 +468,7 @@ const JS365Lib = {
     },
 
     // バイナリーファイルをアップロードする。
-    uploadBinaryFile(url, id, callback, event=null) {
+    uploadBinaryFile: (url, id, callback, event=null) => {
       if (event)
         event.preventDefault();
       const afile = document.getElementById(id).files[0];
@@ -487,7 +490,7 @@ const JS365Lib = {
     },
 
     // BLOB をアップロードする。
-    uploadBLOB(url, blob, callback, event=null) {
+    uploadBLOB: (url, blob, callback, event=null) => {
       if (event)
         event.preventDefault();
       const request = new Request(url, {
@@ -502,7 +505,7 @@ const JS365Lib = {
    },
 
     // テキストファイルを読む。id は input[type="file"] の ID。
-    readTextFile(id, callback, event=null) {
+    readTextFile: (id, callback, event=null) => {
       if (event)
         event.preventDefault();
       const efile = document.getElementById(id).files[0];
@@ -516,7 +519,7 @@ const JS365Lib = {
     },
 
     // バイナリーファイルを読む。id は input[type="file"] の ID。
-    readBinaryFile(id, callback, event=null) {
+    readBinaryFile: (id, callback, event=null) => {
       if (event)
         event.preventDefault();
       const efile = document.getElementById(id).files[0];
@@ -530,209 +533,20 @@ const JS365Lib = {
     },
 
     // click イベントハンドラを追加する。
-    clickEvent(id, callback) {
+    clickEvent: (id, callback) => {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
       }
-      el.addEventListener('click', callback, {passive: false});
+      el.addEventListener('click', callback, , {passive: false});
     },
 
     // change イベントハンドラを追加する。
-    changeEvent(id, callback) {
+    changeEvent: (id, callback) => {
       let el = id;
       if (typeof id == 'string') {
         el = JS365Lib.E(id);
       }
-      el.addEventListener('change', callback, {passive: false});
-    },
-
-    // ストレージのキーの一覧を得る。prefix が空でないときはその文字列が先頭にあるキー (prefix を除いたもの) だけを取得する)
-    getStorageKeys(prefix="", session=true) {
-      let storage = sessionStorage;
-      if (session == false)
-        storage = localStorage;
-      let result = [];
-      for (let i = 0; i < storage.length; i++) {
-        let key = storage.key(i);
-        if (prefix == "") {
-          result.push(key);
-        }
-        else {
-          if (key.startsWith(prefix)) {
-             key = key.replace(prefix, "");
-             result.push(key);
-          }
-        }
-      }
-      return result;
-    },
-
-    // ストレージのキーに対する値を得る。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
-    getStorageValue(key, prefix="", session=true) {
-      let storage = sessionStorage;
-      if (session == false)
-        storage = localStorage;
-      key = prefix + key;
-      return storage.getItem(key);
-    },
-
-    // ストレージのキーに対する値を追加または置換する。(localStorage は他のアプリケーションと共有するため、prefix を付けないとキーが競合する)
-    setStorageValue(key, value, prefix="", session=true) {
-      let storage = sessionStorage;
-      if (session == false)
-        storage = localStorage;
-      key = prefix + key;
-      storage.setItem(key, value);
-    },
-
-    // sessionStorage ストレージをクリアする。(localStorage は他のアプリケーションと共有するため個別のキーを削除することによりクリアすること)
-    clearSessionStorage() {
-      sessionStorage.clear();
-    },
-
-    // ストレージのキーを削除する。(localStorage は他のアプリケーションと共有するため、prefix でアプリケーションを区別する)
-    deleteStorageKey(key, prefix="", session=true) {
-      let storage = sessionStorage;
-      if (session == false)
-        storage = localStorage;
-      storage.removeItem(prefix + key);
-    },
-
-    // HTML テーブルを作成する。
-    htmlTable(rows, header=false, table="", tr="", th="", td="") {
-      let html = "";
-      let row = rows[0];
-      let n = row.length;
-      let tagtr = "<tr>";
-      if (tr != "") {
-        tagtr = `<tr class="${tr}">`;
-      }
-      tagtd = "<td>";
-      if (td != "") {
-        tagtd = `<td class="${td}">`;
-      }
-      if (table == "") {
-        html += "<table>\n";
-      }
-      else {
-        html += `<table class="${table}">\n`;
-      }
-      let i = 0;
-      // ヘッダ行
-      if (header) {
-        i = 1;
-        html += tagtr;
-        if (th == "") {
-          for (let h = 0; h < n; h++) {
-            html += `<th>"${rows[0][h]}"</th>`;
-          }
-        }
-        else {
-            html += `<th class="${th}">"${rows[0][h]}"</th>`;
-        }
-        html += "</tr>\n";
-      }
-      // データ行
-      for (; i < rows.length; i++) {
-        html += tagtr;
-        for (let j = 0; j < n; j++) {
-          html += `${tagtd}${rows[i][j]}</td>`;
-        }
-        html += "</tr>\n";
-      }
-      html += "</table>\n";
-      return html;
-    },
-
-    // HTML リストを作成する。
-    htmlList(data, type="ul", ul="", li="") {
-      html = `<${type}>\n`;
-      if (ul != "")
-        html = `<${type} class="${ul}">\n`;
-      let tagli = "<li>";
-      if (li != "")
-        tagli = `<li class="${li}">`;
-      const n = data.length;
-      for (let i = 0; i < n; i++) {
-         html += `${tagli}${data[i]}</li>\n`;
-      }
-      html += `</${type}>\n`;
-      return html;
-    },
-
-    // HTML アンカー (aタグ) を作成する。
-    function htmlAnchor(url, text, target="") {
-      html = `<a href="${url}`;
-      if (target == "")
-         html += ">";
-      else
-         html += ` target="${target}">`;
-      html += `${text}</a>`;
-      return html;
-    },
-
-    // ドラッグ開始のイベントハンドラ
-    onDragEnter(event) {
-      event.preventDefault();
-      event.dataTransfer.dropEffect = 'copy';
-    },
-
-    // ドラッグ中のイベントハンドラ
-    onDragOver(event) {
-      event.preventDefault();
-      event.dataTransfer.dropEffect = 'copy';
-    },
-
-    // ファイルがドロップしたとき (control は input[type="file"] オブジェクトであること)
-    onDrop(event, control, listid) {
-    // 既定の動作をキャンセルしてドロップできるようにする。
-        event.preventDefault();
-        // ドロップされたデータを取得する。
-        var files = event.dataTransfer.files;
-        // input[type="file"] の control.files を設定する。
-        control.files = files;
-        // <ul id=listid></ul> にファイルを表示
-        for (let f of files) {
-          insertHTML(listid, "<li>" + f.name + "</li>", 2);
-        }
-    },
-
-    // ローカルに保存されている全クッキーを辞書として返す。
-    getAllCookie() {
-      const allCookie = document.cookie;
-      const listCookie = allCookie.split(";");
-      let cookies = {};
-      if (listCookie.length > 0) {
-        for (const cookie of listCookie) {
-           const kvpair = cookie.split("=");
-           const key = kvpair[0].trim();
-           const value = kvpair[1].trim();
-           cookies[key] = value;
-        }
-      }
-      return cookies;
-    },
-
-    // ローカルに保存されているクッキーに追加あるいは書き換える。
-    setCookie(key, value) {
-      document.cookie = `${key}=${value}`;
+      el.addEventListener('change', callback, , {passive: false});
     }
-
-/*
-   ドラッグ＆ドロップ フォームの例
-
-  <form name="form1" method="POST" enctype="multipart/form-data" action="/cgi-bin/CGI365Lib/Class/fileUpload2.cgi"> 
-   <input type="hidden" name="hidden1" value="Upload File OK">
-   <input type="file" name="file1" style="display:none">
-   <div id="dest" class="section"
-     ondragenter="JS365Lib.onDragEnter(event);"
-     ondragover="JS365Lib.onDragOver(event);"
-     ondrop="JS365Lib.onDrop(event, form1.file1);">
-    ここへドロップ (1個のみ)
-   </div>
-   <ul id="files"></ul>
-   <div style="margin-left:28%;margin-top:25px;"><button type="submit">Submit</button></div>
-  </form>
-*/
 };

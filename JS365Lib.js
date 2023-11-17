@@ -1,4 +1,4 @@
-/* My JS Library .. JS365Lib.js v1.6.2  2023-03-25 */
+/* My JS Library .. JS365Lib.js v1.7.0  2023-11-16 */
 "strict";
 
 // URL エスケープ
@@ -439,6 +439,16 @@ function postJSON(url, data, callback, event=null) {
   .then(data => callback(data));
 }
 
+// XML データをポストする。
+function postXml(url, data, callback, event=null) {
+  if (event)
+    event.preventDefault();
+  fetch(url, {"method":"POST", "headers":{"Content-Type":"application/xml"}, "body":data})
+  .then(res => res.json())
+  .then(data => callback(data));
+}
+
+
 // テキストファイルをアップロードする。
 function uploadTextFile(url, id, callback, event=null) {
   if (event)
@@ -714,7 +724,7 @@ function setCookie(key, value) {
 /*
    ドラッグ＆ドロップ フォームの例
 
-  <form name="form1" method="POST" enctype="multipart/form-data" action="/cgi-bin/CGI365Lib/Class/fileUpload2.cgi"> 
+  <form name="form1" method="POST" enctype="multipart/form-data" action="/cgi-bin/CGI365Lib/Class/fileUpload2.cgi">
    <input type="hidden" name="hidden1" value="Upload File OK">
    <input type="file" name="file1" style="display:none">
    <div id="dest" class="section"

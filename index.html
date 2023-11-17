@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8" />
  <meta name="viewport" content="width=device-width,initial-scale=1" />
- <title>JS365Lib 1.6.2</title>
+ <title>JS365Lib 1.7.0</title>
  <!-- BootstrapのCSS読み込み -->
  <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs.min.css" rel="stylesheet">
@@ -88,8 +88,8 @@
 <body>
  <!-- ヘッダー -->
  <header  class="container bg-secondary rounded text-white text-center shadow">
-  <h1 class="display-2 text-white text-center p-3">JS365Lib 1.6.2</h1>
-  <p class="fs-4 p-2">v1.1.1 / 2.1.1</p>
+  <h1 class="display-2 text-white text-center p-3">JS365Lib 1.7.0</h1>
+  <p class="fs-4 p-2">v1.x.x (通常版) / v2.x.x (名前空間版)</p>
  </header>
 
  <!-- 本文 -->
@@ -151,6 +151,7 @@
            <li><a href="#fetchArrayBuffer">fetchArrayBuffer(url, data, method, callback)</a></li>
            <li><a href="#postFormData">postFormData(url, form, callback)</a></li>
            <li><a href="#postJSON">postJSON(url, data, callback)</a></li>
+           <li><a href="#postXml">postXml(url, data, callback)</a></li>
            <li><a href="#uploadTextFile">uploadTextFile(url, id, callback)</a></li>
            <li><a href="#uploadBinaryFile">uploadBinaryFile(url, id, callback)</a></li>
            <li><a href="#readTextFile">readTextFile(id, callback)</a></li>
@@ -977,7 +978,7 @@ else {
 
       <!--  postFormData(url, formData, callback) -->
       <h3><a id="postFormData">postFormData(url, formData, callback)</a></h3>
-      <p></p>
+      <p>JavaScript の FormData オブジェクトをポストする。結果は JSON として受け取る。</p>
       <p>使用例</p>
       <pre><code>const formData = new FormData();
   formData.append("formText1", "FORM_TEXT1");
@@ -996,7 +997,7 @@ else {
 
       <!--  postJSON(url, data, callback) -->
       <h3><a id="postJSON">postJSON(url, data, callback)</a></h3>
-      <p></p>
+      <p>JSON をデータとしてポストする。結果も JSON として受け取る。</p>
       <p>使用例</p>
       <pre><code>postJSON("/cgi-bin/CGI365Lib/Proj/postJSON.cgi", {"product":"バナナ", "amount":30, "price":50}, (data) => {
   let s = `product=${data.product}, payment=${data.payment}`;
@@ -1010,6 +1011,38 @@ else {
   .then(data => callback(data));
 }</code></pre>
       <br>
+
+      <!--  postXml(postXml(url, data, callback, event=null) -->
+      <h3><a id="postXml">postXml(postXml(url, data, callback, event=null)</a></h3>
+      <p>XML をデータとしてポストする。ただし、</p>
+      <ul>
+        <li>&lt;?xml ... ?&gt; は付けないこと。</li>
+        <li>データの並びは &lt;data&gt; ... &lt;data/&gt; で囲むこと。</li>
+        <li>データは &lt;tag&gt;content&lt;/tag&gt; のような単純な形式のみとする。</li>
+      </ul>
+      <p>使用例</p>
+      <pre><code>  function sendXml() {
+    const id = getValue("id");
+    if (id == "")
+      alert("id is empty.");
+    else {
+      const name = getValue("name");
+      let xmldata = `&lt;data>&lt;id>${id}&lt;/id>&lt;name>${name}&lt;/name>&lt;/data>`;
+      postXml("/post_request_xml", xmldata, (data) => {
+          setValue("headers", data["headers"]);
+          setValue("body", data["body"]);
+          setValue("result", data["result"]);
+      });
+    }
+  }</code></pre>
+      <p>ソース</p>
+      <pre><code>function postXml(url, data, callback, event=null) {
+  if (event)
+    event.preventDefault();
+  fetch(url, {"method":"POST", "headers":{"Content-Type":"application/xml"}, "body":data})
+  .then(res => res.json())
+  .then(data => callback(data));
+}</code></pre>
 
       <!--  uploadTextFile(url, id, callback) -->
       <h3><a id="uploadTextFile">uploadTextFile(url, id, callback)</a></h3>
