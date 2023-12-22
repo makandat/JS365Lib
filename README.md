@@ -11,98 +11,71 @@ JS365Lib は jQuery の代わりに使える軽量 JavaScript ライブラリで
 
 <!-- 内容一覧 (もくじ) -->
 ### <a id="contents">内容一覧 (もくじ)</a>
-      <ul>
-        <li><a href="#abstraction">概要</a>
-          <ul>
-          <li><a href="#requirement">基本的な要件</a></li>
-          <li><a href="#contents">内容一覧 (もくじ)</a></li>
-          </ul>
-        </li>
-        <li><a href="#escape_functions">エスケープ</a>
-          <ul>
-          <li><a href="#escURL">escURL(str, param=false)</a></li>
-          <li><a href="#escHTML">escHTML(str)</a></li>
-          </ul>
-        </li>
-        <li><a href="#dom_functions">DOM 関数</a></li>
-          <ul>
-           <li><a href="#E">E(d, type="i", index=0)</a></li>
-           <li><a href="#elName">elName(name)</a></li>
-           <li><a href="#elTag">elTag(name, typename=null)</a></li>
-           <li><a href="#elClass">elClass(name)</a></li>
-           <li><a href="#getValue">getValue(id)</a></li>
-           <li><a href="#setValue">setValue(id, value)</a></li>
-           <li><a href="#insertHTML">insertHTML(id, html, position=0)</a></li>
-           <li><a href="#clearHTML">clearHTML(id)</a></li>
-           <li><a href="#addChild">addChild(parent, child)</a></li>
-           <li><a href="#getAttr">getAttr(id, attr)</a></li>
-           <li><a href="#setAttr">setAttr(id, attr, value)</a></li>
-           <li><a href="#dropAttr">dropAttr(id, attr)</a></li>
-           <li><a href="#getCheck">getCheck(id)</a></li>
-           <li><a href="#getCheckedId">getCheckedId(name)</a></li>
-           <li><a href="#setCheck">setCheck(id, checked=true)</a></li>
-           <li><a href="#setCheckByIndex">setCheckByIndex(elements, index)</a></li>
-           <li><a href="#getSelectValue">getSelectValue(id)</a></li>
-           <li><a href="#setSelect">setSelect(id, index)</a></li>
-           <li><a href="#setTextStyle">setTextStyle(span_id, color="blank", bold=false, italic=false, underline=false, strike=false, font_size="normal")</a></li>
-           <li><a href="#setDivStyle">setDivStyle(div_id, border_style="solid", border_width="thin", border_color="black", bg_color="white", rounded=false, shadow=false)</a></li>
-          </ul>
-        <li><a href="#event_functions">イベントハンドラ関数</a>
-          <ul>
-           <li><a href="#onPageLoad">onPageLoad(callback)</a></li>
-           <li><a href="#clickEvent">clickEvent(id, callback)</a></li>
-           <li><a href="#changeEvent">changeEvent(id, callback)</a></li>
-           <li><a href="#bullet">bullet(shape="rect", width=32, height=32, border_width=1, border_color="black", bg_color="white")</a></li>
-          </ul>
-        </li>
-        <li><a href="#request_functions">ウェブリクエスト関数</a>
-          <ul>
-           <li><a href="#fetchGET">fetchGET(url, data=null)</a></li>
-           <li><a href="#fetchPOST">fetchPOST(url, data)</a></li>
-           <li><a href="#fetchMultipartForm">fetchMultipartForm(url, form)</a></li>
-           <li><a href="#fetchJSON">fetchJSON(url, json)</a></li>
-           <li><a href="#fetchBLOB">fetchBLOB(url, buffer)</a></li>
-          </ul>
-        </li>
-        <li><a href="#storage">ストレージ関数</a>
-         <ul>
-          <li><a href="#getStorageKeys">getStorageKeys(prefix="", session=true)</a></li>
-          <li><a href="#getStorageValue">getStorageValue(key, prefix="", session=true)</a></li>
-          <li><a href="#setStorageValue">setStorageValue(key, value, prefix="", session=true)</a></li>
-          <li><a href="#clearSessionStorage">clearSessionStorage()</a></li>
-          <li><a href="#deleteStorageKey">deleteStorageKey(key, prefix="", session=true)</a></li>
-         </ul>
-        </li>
-        <li><a href="#dragdrop">Drag &amp; Drop 関数</a>
-         <ul>
-          <li><a href="#onDrop">onDrop(event, control, listid)</a></li>
-          <li><a href="#onDragOver">onDragOver(event)</a></li>
-          <li><a href="#onDragEnter">onDragEnter(event)</a></li>
-         </ul>
-        <li><a href="#html">HTML 作成関数</a>
-         <ul>
-          <li><a href="#htmlTable">htmlTable(rows, header=false, table="", tr="", th="", td="")</a></li>
-          <li><a href="#htmlList">htmlList(data, type="ul", ul="", li="")</a></li>
-          <li><a href="#htmlAnchor">htmlAnchor(url, text, target="")</a></li>
-          <li><a href="#bullet">bullet(shape="rect", width=32, height=32, border_width=1, border_color="black", bg_color="white")</a></li>
-         </ul>
-        </li>
-        <li><a href="#cookie">クッキー関数
-         <ul>
-          <li><a href="#getAllCookie">getAllCookie()</a></li>
-          <li><a href="#setCookie">setCookie(key, value)</a></li>
-          <li><a href="#removeCookie">removeCookie(key)</a></li>
-         </ul>
-        </li>
-        <li><a href="#other_functions">日付時刻関数</a>
-          <ul>
-           <li><a href="#getNowString">getNowString()</a></li>
-           <li><a href="#parseJSTString">parseJSTString(str)</a></li>
-           <li><a href="#parseUTCString">parseUTCString(str)</a></li>
-           <li><a href="#getDateTimeString">getDateTimeString(dtime)</a></li>
-          </ul>
-        </li>
-      </ul>
-      <br>
+#### エスケープ
+* escURL(str, param=false)
+* escHTML(str)
 
-## 具体的内容は index.html 参照。
+#### DOM 関数
+* E(d, type="i", index=0)
+* elName(name)
+* elTag(name, typename=null)
+* elClass(name)
+* getValue(id)
+* setValue(id, value)
+* insertHTML(id, html, position=0)
+* clearHTML(id)
+* addChild(parent, child)
+* getAttr(id, attr)
+* setAttr(id, attr, value)
+* dropAttr(id, attr)
+* getCheck(id)
+* getCheckedId(name)
+* setCheck(id, checked=true)
+* setCheckByIndex(elements, index)
+* getSelectValue(id)
+* setSelect(id, index)
+* setTextStyle(span_id, color="blank", bold=false, italic=false, underline=false, strike=false, font_size="normal")
+* setDivStyle(div_id, border_style="solid", border_width="thin", border_color="black", bg_color="white", rounded=false, shadow=false)
+
+#### イベントハンドラ関数
+* onPageLoad(callback)
+* clickEvent(id, callback)
+* changeEvent(id, callback)
+
+#### ウェブリクエスト関数
+* fetchGET(url, data=null)
+* fetchPOST(url, data)
+* fetchMultipartForm(url, form)
+* fetchJSON(url, json)
+* fetchBLOB(url, buffer)
+
+#### ストレージ関数
+* getStorageKeys(prefix="", session=true)
+* getStorageValue(key, prefix="", session=true)
+* setStorageValue(key, value, prefix="", session=true)
+* clearSessionStorage()
+* deleteStorageKey(key, prefix="", session=true)
+
+#### Drag &amp; Drop 関数
+* onDrop(event, control, listid)
+* onDragOver(event)
+* onDragEnter(event)
+
+#### HTML 作成関数
+* htmlTable(rows, header=false, table="", tr="", th="", td="")
+* htmlList(data, type="ul", ul="", li="")
+* htmlAnchor(url, text, target="")
+* bullet(shape="rect", width=32, height=32, border_width=1, border_color="black", bg_color="white")
+
+#### クッキー関数
+* getAllCookie()
+* setCookie(key, value)
+* removeCookie(key)
+
+#### 日付時刻関数
+* getNowString()
+* parseJSTString(str)
+* parseUTCString(str)
+* getDateTimeString(dtime)
+
+#### 具体的内容は index.html 参照。
