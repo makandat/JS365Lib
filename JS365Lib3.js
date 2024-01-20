@@ -1,7 +1,7 @@
-/* My JS Library .. JS365Lib3.js  2023-12-22 */
+/* My JS Library .. JS365Lib3.js  2023-01-01 */
 "strict";
 
-const VERSION = "3.3.4"
+const VERSION = "3.3.6"
 
 /* ------------------------------- エスケープ-----------------------------------*/
 // URL エスケープ
@@ -395,8 +395,8 @@ async function fetchGET(url, data=null) {
     y = await response.json();
   else if (content_type.startsWith("text/plain"))
     y = await response.text();
-  else if (content_type.starsWith("text/html"))
-    y = await response.html();
+  else if (content_type.startsWith("text/html"))
+    y = await response.text();
   else if (content_type.startsWith("application/xml"))
     y = await response.xml();
   else
@@ -416,7 +416,7 @@ async function fetchPOST(url, data) {
   else if (content_type.startsWith("text/plain"))
     y = await response.text();
   else if(content_type.startsWith("text/html"))
-    y = await response.html();
+    y = await response.text();
   else if(content_type.startsWith("application/xml"))
     y = await response.xml();
   else
@@ -424,12 +424,18 @@ async function fetchPOST(url, data) {
   return y;
 }
 
-// 指定した URL に(マルチパート) フォームを POST し結果 (JSON) を得る。
+// 指定した URL にフォームを POST し結果 (JSON) を得る。
 async function fetchMultipartForm(url, form) {
   const formdata = new FormData(form);
   const options = {"method":"POST", "body":formdata};
   const response = await fetch(url, options);
   const data = await response.json();
+  return data;
+}
+
+// 指定した URL にフォームを POST し結果 (JSON) を得る。(fetchMultipartForm()をコールしているだけ)
+async function fetchFormData(url, form) {
+  const data = await fetchMultipartForm(url, form);
   return data;
 }
 
@@ -477,6 +483,19 @@ function changeEvent(id, callback) {
     return;
   }
   el.addEventListener("change", callback, {passive: false});
+}
+
+// フォームが送信されるときのイベントハンドラを追加する。
+function submitEvent(form, callback) {
+  let el = form;
+  if (typeof form == "string") {
+    el = document.getElementById(form);
+  }
+  if (el == null) {
+    alert("The form is null. (You must use this after the page loaded)");
+    return;
+  }
+  el.addEventListener("submit", callback);
 }
 
 // ページがロードされたときのハンドラを追加する。
