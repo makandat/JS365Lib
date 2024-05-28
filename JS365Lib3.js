@@ -1,7 +1,7 @@
-/* My JS Library .. JS365Lib3.js  2023-01-01 */
+/* My JS Library .. JS365Lib3.js  2024-05-29 */
 "strict";
 
-const VERSION = "3.3.6"
+const VERSION = "3.3.7"
 
 /* ------------------------------- エスケープ-----------------------------------*/
 // URL エスケープ
@@ -483,6 +483,21 @@ function changeEvent(id, callback) {
     return;
   }
   el.addEventListener("change", callback, {passive: false});
+}
+
+// KeyDown イベントハンドラを追加する。
+function keyDownEvent(key, shift, callback) {
+  document.addEventListener("keydown",
+    event => {
+       if (shift) {
+         if (event.key == key && event.shiftKey)
+           callback();
+       }
+       else {
+         if (event.key == key)
+           callback();
+       }
+    });
 }
 
 // フォームが送信されるときのイベントハンドラを追加する。
