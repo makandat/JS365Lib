@@ -1,7 +1,8 @@
-/* My JS Library .. JS365Lib3.js  2024-05-29 */
+/* My JS Library .. JS365Lib3.js  2024-07-14 */
 "strict";
 
-const VERSION = "3.3.7"
+
+const VERSION = "3.4.0"
 
 /* ------------------------------- エスケープ-----------------------------------*/
 // URL エスケープ
@@ -342,12 +343,7 @@ function getSelectValue(id) {
   if (typeof id == "string") {
     el = document.getElementById(id);
   }
-  for (let opt of el.options) {
-    if (opt.selected) {
-       return opt.value;
-    }
-  }
-  return null;
+  return el.value;
 }
 
 // セレクタ― (ドロップダウン) のオプションを選択状態を設定する。
@@ -435,7 +431,11 @@ async function fetchMultipartForm(url, form) {
 
 // 指定した URL にフォームを POST し結果 (JSON) を得る。(fetchMultipartForm()をコールしているだけ)
 async function fetchFormData(url, form) {
-  const data = await fetchMultipartForm(url, form);
+  let form1 = form;
+  if (typeof form == "string") {
+     form1 = document.getElementById(form);
+  }
+  const data = await fetchMultipartForm(url, form1);
   return data;
 }
 
@@ -485,19 +485,11 @@ function changeEvent(id, callback) {
   el.addEventListener("change", callback, {passive: false});
 }
 
-// KeyDown イベントハンドラを追加する。
-function keyDownEvent(key, shift, callback) {
+// Key Down イベントハンドラを追加する。
+function keyEvent(callback) {
   document.addEventListener("keydown",
-    event => {
-       if (shift) {
-         if (event.key == key && event.shiftKey)
-           callback();
-       }
-       else {
-         if (event.key == key)
-           callback();
-       }
-    });
+     event => callback(event)
+  )
 }
 
 // フォームが送信されるときのイベントハンドラを追加する。
@@ -741,3 +733,6 @@ function getDateTimeString(dtime) {
    <div style="margin-left:28%;margin-top:25px;"><button type="submit">Submit</button></div>
   </form>
 */
+
+
+// export { VERSION, E, escURL, escHTML, onPageLoad, getValue, setValue };
